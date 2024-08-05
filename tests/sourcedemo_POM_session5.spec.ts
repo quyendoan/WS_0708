@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 import { LoginPage } from '../pages/login.page';
 import { BasePage } from '../pages/base.page';
 import { CartPage } from '../pages/cart.page';
@@ -14,7 +14,7 @@ test('TC001 - Verify error message appears when login with invalid user', async 
     await login_page.login('locked_out_user', 'secret_sauce')
    
     // Verify that the error message “Epic sadface: Sorry, this user has been locked out.” is displayed
-    await expect(page.locator('[data-test="error"]')).toHaveText('Epic sadface: Sorry, this user has been locked out.');
+    await base_page.verify_error_text()
   });  
 
 // TC002 - Verify user can order product successfully
@@ -29,7 +29,7 @@ test('TC002 - Verify user can order product successfully', async ({ page }) => {
     await cart_page.checkout_and_finish_order('Quyen', 'Doan', '12345')
  
     // Validate thank you message
-    await expect(page.locator('.complete-header')).toHaveText('Thank you for your order!');
-    await expect(page.locator('.complete-text')).toHaveText('Your order has been dispatched, and will arrive just as fast as the pony can get there!');
+    await base_page.verify_complete_header()
+    await base_page.verify_complete_text()
   });
 
